@@ -20,7 +20,7 @@ class Formatter {
         switch($type){
         
         case 'boolean':
-            $value = is_string($value) ? filter_var($value, FILTER_VALIDATE_BOOLEAN) : (bool)$value;
+            $value = is_string($value) ? filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) : (bool)$value;
             $value = is_null($value) ? false : $value;
             break;
             

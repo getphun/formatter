@@ -30,6 +30,9 @@ class Location implements \JsonSerializable
         }
         
         $google_api_key = '';
+        if(module_exists('site-param'))
+            $google_api_key = \Phun::$dispatcher->setting->google_map_api_key;
+            
         $this->_html = sprintf($this->_template, $q, $google_api_key);
     }
     

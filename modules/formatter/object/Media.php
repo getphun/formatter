@@ -29,6 +29,9 @@ class Media implements \JsonSerializable
         if($name === 'value')
             return $this->_value;
         
+        if(!module_exists('media'))
+            return $this->_value;
+        
         if(is_null($this->_external))
             $this->_external = substr($this->_value,0,4) === 'http';
         

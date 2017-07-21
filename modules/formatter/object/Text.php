@@ -20,7 +20,7 @@ class Text implements \JsonSerializable
     private function _cleanValue(){
         $ctx = preg_replace('!<[^>]+>!', ' ', $this->_value);
         $ctx = preg_replace('! +!', ' ', $ctx);
-        $ctx = trim(htmlspecialchars($ctx, ENT_QUOTES));
+        $ctx = trim($ctx, ENT_QUOTES);
         
         $this->_clean = $ctx;
     }

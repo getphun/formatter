@@ -140,6 +140,8 @@ class Formatter {
                         $object_ids = array_column($objects, 'id');
                     
                     $model = $args['model'];
+                    if(!autoload_class_exists($model))
+                        continue;
                     $chains= $args['chain'];
                     $chain_model  = $chains['model'];
                     $chain_object = $chains['object'];
@@ -201,6 +203,8 @@ class Formatter {
                         continue;
                     
                     $model = $args['model'];
+                    if(!autoload_class_exists($model))
+                        continue;
                     $objs  = $model::get([
                         'id IN :ids',
                         'bind' => [
@@ -233,6 +237,8 @@ class Formatter {
                         $object_ids = array_column($objects, 'id');
                     
                     $model = $args['model'];
+                    if(!autoload_class_exists($model))
+                        continue;
                     $prop  = $args['object'];
                     $objs  = $model::get([
                         $prop . ' IN :ids',

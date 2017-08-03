@@ -21,7 +21,7 @@ return [
     'formatter' => [
         'user' => [
             'avatar'    => 'media',
-            'password' => 'delete',
+            'password'  => 'delete',
             'created'   => 'date',
             'validated' => 'boolean',
             'about' => 'text',

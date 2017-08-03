@@ -98,7 +98,7 @@ class Formatter {
                 if(is_string($args))
                     continue;
                 
-                if(!in_array($args['type'], ['partial', 'object', 'chain']))
+                if(!in_array($args['type'], ['partial', 'object', 'multiple-object', 'chain']))
                     continue;
                 
                 $process = false;
@@ -124,8 +124,12 @@ class Formatter {
             
             foreach($field_objects as $field => $args){
                 foreach($objects as $object){
-                    if($args['type'] === 'object' && $object->$field)
-                        $args['ids'][] = $object->$field;
+                    if($object->$field){
+                        if($args['type'] === 'object')
+                            $args['ids'][] = $object->$field;
+                        elseif($args['type'] == 'multiple-object')
+                            $args['ids'] = array_merge($args['ids'], explode($args['separator'], $object->$field));
+                    }
                 }
                 if($args['ids'])
                     $args['ids'] = array_values(array_unique($args['ids']));
@@ -198,7 +202,7 @@ class Formatter {
                     
                     $object_field_objects[$field] = $used_chains;
                     
-                }elseif($args['type'] === 'object'){
+                }elseif($args['type'] === 'object' || $args['type'] === 'multiple-object'){
                     if(!$args['ids'])
                         continue;
                     
@@ -310,6 +314,18 @@ class Formatter {
                         $object->$field = $value;
                         break;
                     
+                    case 'multiple-object':
+                        $obj_field = $object->$field;
+                        $obj_field_ids = explode($args['separator'], $obj_field);
+                        if($fetch){
+                            $obj_values = [];
+                            foreach($obj_field_ids as $obj_field_id){
+                                if(isset($object_field_objects[$field][$obj_field_id]))
+                                    $obj_values[] = $object_field_objects[$field][$obj_field_id];
+                            }
+                            $object->$field = $obj_values;
+                        }
+                        
                     case 'object':
                         $obj_field = $object->$field;
                         if($fetch && isset($object_field_objects[$field][$obj_field])){

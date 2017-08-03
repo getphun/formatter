@@ -325,6 +325,7 @@ class Formatter {
                             }
                             $object->$field = $obj_values;
                         }
+                        break;
                         
                     case 'object':
                         $obj_field = $object->$field;

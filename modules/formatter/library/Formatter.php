@@ -300,6 +300,19 @@ class Formatter {
                         $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
                         $object->$field = new Enum($options, $object->$field);
                         break;
+                    
+                    case 'multiple-enum':
+                        $form = $args['form'];
+                        $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
+                        $obj_field = $object->$field;
+                        $obj_field_ids = explode($args['separator'], $obj_field);
+                        $obj_values = [];
+                        foreach($obj_field_ids as $obj_field_id){
+                            if(isset($options[$obj_field_id]))
+                                $obj_values[] = new Enum($options, $obj_field_id);
+                        }
+                        $object->$field = $obj_values;
+                        break;
                         
                     case 'join':
                         $jflds = $args['fields'];

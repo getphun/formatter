@@ -124,7 +124,7 @@ class Formatter {
             
             foreach($field_objects as $field => $args){
                 foreach($objects as $object){
-                    if($object->$field){
+                    if(in_array($args['type'], ['object', 'multiple-object']) && $object->$field){
                         if($args['type'] === 'object')
                             $args['ids'][] = $object->$field;
                         elseif($args['type'] == 'multiple-object')

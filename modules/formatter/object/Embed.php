@@ -83,6 +83,8 @@ class Embed implements \JsonSerializable
         
         $this->url  = trim($this->_value);
         $this->html = $this->url;
+        if(!$this->url)
+            return;
         
         $val = $this->url;
         if(preg_match('!<(iframe|video)[^>]+src="([^"]+)"!', $val, $match)){

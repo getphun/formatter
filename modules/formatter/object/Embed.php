@@ -17,6 +17,7 @@ class Embed implements \JsonSerializable
     protected $html;
     protected $width;
     protected $url;
+    protected $size;
         
     private function _parseEmbed(){
         $sizes = [
@@ -72,7 +73,7 @@ class Embed implements \JsonSerializable
         $templates = [
             'dailymail'     => '<iframe width="${width}" height="${height}" allowFullscreen="1" frameborder="0" scrolling="no" src="http://www.dailymail.co.uk/embed/video/${id}.html"></iframe>',
             'dailymotion'   => '<iframe width="${width}" height="${height}" allowFullscreen="1" frameborder="0" src="https://www.dailymotion.com/embed/video/${id}"></iframe>',
-            'facebook'      => '<div class="fb-video" data-href="${url}" data-width="auto" data-show-text="false" data-allowfullscreen="true"></div>',
+            'facebook'      => '<div class="fb-video" data-href="${url}" data-width="auto" data-size="${size}" data-show-text="false" data-allowfullscreen="true"></div>',
             'imdb'          => '<iframe width="${width}" height="${height}" allowFullscreen="1" frameborder="0" src="http://www.imdb.com/videoembed/${id}"></iframe>',
             'liveleak'      => '<iframe width="${width}" height="${height}" allowFullscreen="1" frameborder="0" src="http://www.liveleak.com/ll_embed?f=${id}"></iframe>',
             'vidio'         => '<iframe width="${width}" height="${height}" allowFullscreen="1" frameborder="0" src="https://www.vidio.com/embed/${id}?player_only=true&autoplay=false"></iframe>',
@@ -127,9 +128,10 @@ class Embed implements \JsonSerializable
             }
         }
         
+        $this->size = $this->width . 'x' . $this->height;
         if(isset($templates[$this->vendor])){
             $template = $templates[$this->vendor];
-            $looper   = ['width', 'height', 'id', 'url', 'vendor'];
+            $looper   = ['width', 'height', 'id', 'url', 'vendor', 'size'];
             foreach($looper as $loop)
                 $template = str_replace('${'.$loop.'}', $this->$loop, $template);
             $this->html = $template;

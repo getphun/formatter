@@ -73,3 +73,10 @@ sering karena pada kondisi tertentu akan menggunakan resource yang cukup berat.
 Jika ada kondisi dimana developer perlu memformat type object yang sama berulang-ulang,
 sangat disarankan mengelompokan object-object tersebut dalam satu array dan lakukan
 format sekali.
+
+## TODO
+
+1. Parse embed 
+   1. Twitter Status
+   1. Google Plus
+   1. Facebook Post

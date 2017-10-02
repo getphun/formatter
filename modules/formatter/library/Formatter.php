@@ -46,12 +46,17 @@ class Formatter {
             break;
             
         case 'media-list':
-            $values = explode(',', $value);
-            foreach($values as $index => $val){
-                $val = trim($val);
-                $values[$index] = new Media($val);
+            $value = trim($value);
+            if(!$value){
+                $value = [];
+            }else{
+                $values = explode(',', $value);
+                foreach($values as $index => $val){
+                    $val = trim($val);
+                    $values[$index] = new Media($val);
+                }
+                $value = $values;
             }
-            $value = $values;
             break;
             
         case 'number':

@@ -21,7 +21,8 @@ class Text implements \JsonSerializable
         $ctx = preg_replace('!<[^>]+>!', ' ', $this->_value);
         $ctx = preg_replace('! +!', ' ', $ctx);
         $ctx = trim($ctx, ENT_QUOTES);
-        
+        $ctx = preg_replace('!\r\n|\r|\n!', ' ', $ctx);
+        $ctx = preg_replace('! +!', ' ', $ctx);
         $this->_clean = $ctx;
     }
     

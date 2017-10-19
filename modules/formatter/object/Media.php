@@ -49,6 +49,21 @@ class Media implements \JsonSerializable
         return $this->_value;
     }
     
+    public function img($width=null, $height=null, $attrs=[]){
+        // TODO
+        // get image size if $width or $height is null
+        
+        $attrs['width']  = $width;
+        $attrs['height'] = $height;
+        $attrs['src']    = $this->__get("_{$width}x{$height}");
+        
+        $tx = '<img ';
+        $tx.= array_to_attr($attrs);
+        $tx.= '>';
+        
+        return $tx;
+    }
+    
     public function jsonSerialize(){
         return $this->_value;
     }

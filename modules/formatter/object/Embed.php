@@ -85,6 +85,11 @@ class Embed implements \JsonSerializable
                 .   'width="${width}">'
                 . '</iframe>',
             
+            'twitter' =>
+                  '<blockquote class="twitter-tweet">'
+                .   '<a href="${url}"></a>'
+                . '</blockquote>',
+            
             'vidio' => 
                   '<iframe '
                 .   'allowFullscreen="1" '
@@ -141,6 +146,7 @@ class Embed implements \JsonSerializable
             'imdb'          => 'http://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
             'liveleak'      => 'http://www.liveleak.com/ll_embed?f=${id}',
+            'twitter'       => 'https://twitter.com/${user}/status/${id}',
             'videoplayer'   => '${url}',
             'vidio'         => 'https://www.vidio.com/embed/${id}?player_only=true&autoplay=false',
             'vidme'         => 'https://vid.me/e/${id}?tools=1',
@@ -155,6 +161,7 @@ class Embed implements \JsonSerializable
             '/facebook\.com\/.+facebook\.com%2F([^%]+)%2Fvideos%2F([0-9]+)/'
                                                                 => [ 'facebook',    ['user'=>1,'id'=>2]     ],
             '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',     ['id'=>1]               ],
+            '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',     ['user'=>1, 'id'=>2]    ],
             '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer', ['url'=>0, 'mime'=>1]   ],
         
             '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',       ['id'=>1]               ],
@@ -186,6 +193,7 @@ class Embed implements \JsonSerializable
             'instagram'     => [ 'width' => 320, 'height' => 320 ],
             'facebook'      => [ 'width' => 854, 'height' => 400 ],
             'liveleak'      => [ 'width' => 640, 'height' => 360 ],
+            'twitter'       => [ 'width' => 560, 'height' => 314 ],
             'videoplayer'   => [ 'width' => 560, 'height' => 314 ],
             'vidio'         => [ 'width' => 480, 'height' => 270 ],
             'vidme'         => [ 'width' => 854, 'height' => 480 ],

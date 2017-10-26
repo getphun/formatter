@@ -169,7 +169,7 @@ class Embed implements \JsonSerializable
                                                                 => [ 'facebook',    ['user'=>1,'id'=>2]     ],
             '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',     ['id'=>1]               ],
             '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',     ['user'=>1, 'id'=>2]    ],
-            '/plus\.google\.com\/([0-9]+)\/posts\/([\w]+)/'     => [ 'googleplus',  ['user'=>1, 'id'=>2]    ],
+            '/plus\.google\.com\/([^\/]+)\/posts\/([\w]+)/'     => [ 'googleplus',  ['user'=>1, 'id'=>2]    ],
             '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer', ['url'=>0, 'mime'=>1]   ],
         
             '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',       ['id'=>1]               ],

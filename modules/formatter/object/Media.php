@@ -15,10 +15,21 @@ class Media implements \JsonSerializable
     protected $_ext;
     protected $_external;
     
+    protected $_width;
+    protected $_height;
+    
     private function _parseMedia(){
         $exts = explode('.', $this->_value);
         $this->_ext  = end($exts);
         $this->_file = preg_replace('/\.'.$this->_ext.'$/', '', $this->_value);
+    }
+    
+    private function _getSize(){
+        $abs = BASEPATH . $this->_value;
+        if(is_file($abs))
+            list($this->_width, $this->_height) = getimagesize($abs);
+        else
+            $this->_width = $this->_height = 1;
     }
     
     public function __construct($value){
@@ -62,6 +73,16 @@ class Media implements \JsonSerializable
         $tx.= '>';
         
         return $tx;
+    }
+    
+    public function size($dir){
+        if(is_null($this->_width))
+            $this->_getSize();
+        
+        if(!in_array($dir, ['width', 'height']))
+            return 0;
+        
+        return $this->{'_'.$dir};
     }
     
     public function jsonSerialize(){

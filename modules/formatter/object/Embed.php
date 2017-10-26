@@ -54,6 +54,12 @@ class Embed implements \JsonSerializable
                 .   'data-width="auto">'
                 . '</div>',
             
+            'googleplus' => 
+                  '<div '
+                .   'class="g-post" '
+                .   'data-href="${url}">'
+                . '</div>',
+            
             'imdb' => 
                   '<iframe '
                 .   'allowFullscreen="1" '
@@ -143,6 +149,7 @@ class Embed implements \JsonSerializable
             'dailymail'     => 'http://www.dailymail.co.uk/embed/video/${id}.html',
             'dailymotion'   => 'https://www.dailymotion.com/embed/video/${id}',
             'facebook'      => 'https://www.facebook.com/${user}/videos/${id}',
+            'googleplus'    => 'https://plus.google.com/${user}/posts/${id}',
             'imdb'          => 'http://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
             'liveleak'      => 'http://www.liveleak.com/ll_embed?f=${id}',
@@ -162,6 +169,7 @@ class Embed implements \JsonSerializable
                                                                 => [ 'facebook',    ['user'=>1,'id'=>2]     ],
             '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',     ['id'=>1]               ],
             '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',     ['user'=>1, 'id'=>2]    ],
+            '/plus\.google\.com\/([0-9]+)\/posts\/([\w]+)/'     => [ 'googleplus',  ['user'=>1, 'id'=>2]    ],
             '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer', ['url'=>0, 'mime'=>1]   ],
         
             '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',       ['id'=>1]               ],
@@ -192,6 +200,7 @@ class Embed implements \JsonSerializable
             'imdb'          => [ 'width' => 854, 'height' => 650 ],
             'instagram'     => [ 'width' => 320, 'height' => 320 ],
             'facebook'      => [ 'width' => 854, 'height' => 400 ],
+            'googleplus'    => [ 'width' => 560, 'height' => 314 ],
             'liveleak'      => [ 'width' => 640, 'height' => 360 ],
             'twitter'       => [ 'width' => 560, 'height' => 314 ],
             'videoplayer'   => [ 'width' => 560, 'height' => 314 ],

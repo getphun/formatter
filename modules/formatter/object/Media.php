@@ -61,12 +61,48 @@ class Media implements \JsonSerializable
     }
     
     public function img($width=null, $height=null, $attrs=[]){
-        // TODO
-        // get image size if $width or $height is null
+        if(is_array($width)){
+            $attrs = $width;
+            $width = null;
+            $height = null;
+        }elseif(is_array($height)){
+            $attrs = $height;
+            $height = null;
+        }
+        
+        $img_width = 0;
+        $img_height= 0;
+        if(is_null($width) || is_null($height)){
+            $img_width = $this->size('width');
+            $img_height= $this->size('height');
+            
+            if(is_null($width) && is_null($height)){
+                $width = $img_width;
+                $height= $img_height;
+                
+            }elseif(is_null($width)){
+                $width = floor($img_width * $height / $img_height);
+                
+            }elseif(is_null($height)){
+                $height= floor($img_height * $width / $img_width);
+            }
+        }
+        
+        if($height == 'square')
+            $height = $width;
+        elseif($height == 'wide')
+            $height = floor(($width/16)*9);
+        elseif($height == '4x3')
+            $height = floor(($width/4)*3);
         
         $attrs['width']  = $width;
         $attrs['height'] = $height;
-        $attrs['src']    = $this->__get("_{$width}x{$height}");
+        
+        if($width != $img_width || $height != $img_height){
+            $attrs['src'] = $this->__get("_{$width}x{$height}");
+        }else{
+            $attrs['src'] = $this->_value;
+        }
         
         $tx = '<img ';
         $tx.= array_to_attr($attrs);

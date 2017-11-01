@@ -30,6 +30,20 @@ class Embed implements \JsonSerializable
         return $tx;
     }
     
+    private function _makeDOM(){
+        if($this->html == $this->url)
+            return false;
+        
+        libxml_use_internal_errors(true);
+        
+        $dom = new \DOMDocument;
+        $html = '<!DOCTYPE html><html><body id="el">' . $this->embed . '</body></html>';
+        $dom->loadHTML($html);
+        $body = $dom->getElementById('el');
+        
+        return $body->firstChild;
+    }
+    
     private function _parseEmbed(){
         $tmpls = [
             'dailymail' => 
@@ -296,6 +310,8 @@ class Embed implements \JsonSerializable
             return $this->$name;
         if($name == 'embed')
             return $this->_makeEmbed();
+        if($name == 'dom')
+            return $this->_makeDOM();
         return null;
     }
     

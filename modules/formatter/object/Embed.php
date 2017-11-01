@@ -22,6 +22,14 @@ class Embed implements \JsonSerializable
     protected $mime;
     protected $user;
     
+    private function _makeEmbed(){
+        $tx = '<div class="embed embed-' . ($this->vendor??'unknown') . '">';
+        $tx.=   $this->html;
+        $tx.= '</div>';
+        
+        return $tx;
+    }
+    
     private function _parseEmbed(){
         $tmpls = [
             'dailymail' => 
@@ -146,13 +154,13 @@ class Embed implements \JsonSerializable
         ];
         
         $urls = [
-            'dailymail'     => 'http://www.dailymail.co.uk/embed/video/${id}.html',
+            'dailymail'     => 'https://www.dailymail.co.uk/embed/video/${id}.html',
             'dailymotion'   => 'https://www.dailymotion.com/embed/video/${id}',
             'facebook'      => 'https://www.facebook.com/${user}/videos/${id}',
             'googleplus'    => 'https://plus.google.com/${user}/posts/${id}',
-            'imdb'          => 'http://www.imdb.com/videoembed/${id}',
+            'imdb'          => 'https://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
-            'liveleak'      => 'http://www.liveleak.com/ll_embed?f=${id}',
+            'liveleak'      => 'https://www.liveleak.com/ll_embed?f=${id}',
             'twitter'       => 'https://twitter.com/${user}/status/${id}',
             'videoplayer'   => '${url}',
             'vidio'         => 'https://www.vidio.com/embed/${id}?player_only=true&autoplay=false',
@@ -272,6 +280,8 @@ class Embed implements \JsonSerializable
             $this->_parseEmbed();
         if(property_exists($this, $name))
             return $this->$name;
+        if($name == 'embed')
+            return $this->_makeEmbed();
         return null;
     }
     

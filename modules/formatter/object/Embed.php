@@ -52,13 +52,21 @@ class Embed implements \JsonSerializable
                 .   'width="${width}">'
                 . '</iframe>',
             
-            'facebook' =>
+            'facebook-video' =>
                   '<div '
                 .   'class="fb-video" '
                 .   'data-allowfullscreen="true" '
                 .   'data-href="${url}" '
                 .   'data-show-text="false" '
-                .   'data-size="${size}" '
+                .   'data-width="auto">'
+                . '</div>',
+            
+            'facebook-post' =>
+                  '<div '
+                .   'class="fb-post" '
+                .   'data-allowfullscreen="true" '
+                .   'data-href="${url}" '
+                .   'data-show-text="false" '
                 .   'data-width="auto">'
                 . '</div>',
             
@@ -156,7 +164,8 @@ class Embed implements \JsonSerializable
         $urls = [
             'dailymail'     => 'http://www.dailymail.co.uk/embed/video/${id}.html',
             'dailymotion'   => 'https://www.dailymotion.com/embed/video/${id}',
-            'facebook'      => 'https://www.facebook.com/${user}/videos/${id}',
+            'facebook-video'=> 'https://www.facebook.com/${user}/videos/${id}',
+            'facebook-post' => 'https://www.facebook.com/${user}/posts/${id}',
             'googleplus'    => 'https://plus.google.com/${user}/posts/${id}',
             'imdb'          => 'https://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
@@ -170,52 +179,57 @@ class Embed implements \JsonSerializable
         ];
         
         $regexs = [
-            '/youtube.com\/embed\/([\w_\-]+)/i'                 => [ 'youtube',     ['id'=>1]               ],
-            '/youtube\.com(.+)v=([\w_\-]+)/'                    => [ 'youtube',     ['id'=>2]               ],
-            '/facebook\.com\/([^\/]+)\/videos\/([^\/]+)/'       => [ 'facebook',    ['user'=>1,'id'=>2]     ],
+            '/youtube.com\/embed\/([\w_\-]+)/i'                 => [ 'youtube',         ['id'=>1]               ],
+            '/youtube\.com(.+)v=([\w_\-]+)/'                    => [ 'youtube',         ['id'=>2]               ],
+            '/facebook\.com\/([^\/]+)\/videos\/([^\/]+)/'       => [ 'facebook-video',  ['user'=>1,'id'=>2]     ],
             '/facebook\.com\/.+facebook\.com%2F([^%]+)%2Fvideos%2F([0-9]+)/'
-                                                                => [ 'facebook',    ['user'=>1,'id'=>2]     ],
-            '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',     ['id'=>1]               ],
-            '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',     ['user'=>1, 'id'=>2]    ],
-            '/plus\.google\.com\/([^\/]+)\/posts\/([\w]+)/'     => [ 'googleplus',  ['user'=>1, 'id'=>2]    ],
-            '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer', ['url'=>0, 'mime'=>1]   ],
+                                                                => [ 'facebook-video',  ['user'=>1,'id'=>2]     ],
+            '/facebook\.com\/([^\/]+)\/posts\/([^\/]+)/'        => [ 'facebook-post',   ['user'=>1,'id'=>2]     ],
+            '/facebook\.com\/.+facebook\.com%2F([^%]+)%2Fposts%2F([0-9]+)/'
+                                                                => [ 'facebook-post',   ['user'=>1,'id'=>2]     ],
+                                                                
+            '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',         ['id'=>1]               ],
+            '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',         ['user'=>1, 'id'=>2]    ],
+            '/plus\.google\.com\/([^\/]+)\/posts\/([\w]+)/'     => [ 'googleplus',      ['user'=>1, 'id'=>2]    ],
+            '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer',     ['url'=>0, 'mime'=>1]   ],
         
-            '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',       ['id'=>1]               ],
-            '/vidio.com\/watch\/([\w\-]+)/'                     => [ 'vidio',       ['id'=>1]               ],
-            '/instagram\.com\/p\/(\w+)/'                        => [ 'instagram',   ['id'=>1]               ],
-            '/dailymail.co.uk\/video\/([\w]+)\/video-([0-9]+)/' => [ 'dailymail',   ['id'=>2]               ],
-            '/dailymail.co.uk\/([\w]+)\/video\/([0-9]+)/'       => [ 'dailymail',   ['id'=>2]               ],
-            '/dailymotion.com\/embed\/video\/([a-z0-9]+)/'      => [ 'dailymotion', ['id'=>1]               ],
-            '/dailymotion.com\/video\/([a-z0-9]+)/'             => [ 'dailymotion', ['id'=>1]               ],
-            '/dailymotion.com\/.+#video=([a-z0-9]+)/'           => [ 'dailymotion', ['id'=>1]               ],
-            '/dai\.ly\/([a-z0-9]+)/'                            => [ 'dailymotion', ['id'=>1]               ],
-            '/imdb\.com\/videoembed\/([\w]+)/'                  => [ 'imdb',        ['id'=>1]               ],
-            '/imdb\.com\/videoplayer\/([\w]+)/'                 => [ 'imdb',        ['id'=>1]               ],
-            '/imdb\.com\/.*\/videoplayer\/([\w]+)/'             => [ 'imdb',        ['id'=>1]               ],
-            '/imdb\.com\/video\/imdb\/([\w]+)/'                 => [ 'imdb',        ['id'=>1]               ],
-            '/liveleak.com\/ll_embed\?f=([\w\-]+)/'             => [ 'liveleak',    ['id'=>1]               ],
-            '/vid.me\/e\/([\w\-]+)/'                            => [ 'vidme',       ['id'=>1]               ],
-            '/vid.me\/([\w\-]+)/'                               => [ 'vidme',       ['id'=>1]               ],
-            '/vimeo\.com\/([0-9]+)/'                            => [ 'vimeo',       ['id'=>1]               ],
-            '/vimeo\.com\/(.*)\/([0-9]+)/'                      => [ 'vimeo',       ['id'=>2]               ],
-            '/youtube-nocookie.com\/embed\/([\w_\-]+)/i'        => [ 'youtube',     ['id'=>1]               ],
+            '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',           ['id'=>1]               ],
+            '/vidio.com\/watch\/([\w\-]+)/'                     => [ 'vidio',           ['id'=>1]               ],
+            '/instagram\.com\/p\/(\w+)/'                        => [ 'instagram',       ['id'=>1]               ],
+            '/dailymail.co.uk\/video\/([\w]+)\/video-([0-9]+)/' => [ 'dailymail',       ['id'=>2]               ],
+            '/dailymail.co.uk\/([\w]+)\/video\/([0-9]+)/'       => [ 'dailymail',       ['id'=>2]               ],
+            '/dailymotion.com\/embed\/video\/([a-z0-9]+)/'      => [ 'dailymotion',     ['id'=>1]               ],
+            '/dailymotion.com\/video\/([a-z0-9]+)/'             => [ 'dailymotion',     ['id'=>1]               ],
+            '/dailymotion.com\/.+#video=([a-z0-9]+)/'           => [ 'dailymotion',     ['id'=>1]               ],
+            '/dai\.ly\/([a-z0-9]+)/'                            => [ 'dailymotion',     ['id'=>1]               ],
+            '/imdb\.com\/videoembed\/([\w]+)/'                  => [ 'imdb',            ['id'=>1]               ],
+            '/imdb\.com\/videoplayer\/([\w]+)/'                 => [ 'imdb',            ['id'=>1]               ],
+            '/imdb\.com\/.*\/videoplayer\/([\w]+)/'             => [ 'imdb',            ['id'=>1]               ],
+            '/imdb\.com\/video\/imdb\/([\w]+)/'                 => [ 'imdb',            ['id'=>1]               ],
+            '/liveleak.com\/ll_embed\?f=([\w\-]+)/'             => [ 'liveleak',        ['id'=>1]               ],
+            '/vid.me\/e\/([\w\-]+)/'                            => [ 'vidme',           ['id'=>1]               ],
+            '/vid.me\/([\w\-]+)/'                               => [ 'vidme',           ['id'=>1]               ],
+            '/vimeo\.com\/([0-9]+)/'                            => [ 'vimeo',           ['id'=>1]               ],
+            '/vimeo\.com\/(.*)\/([0-9]+)/'                      => [ 'vimeo',           ['id'=>2]               ],
+            '/youtube-nocookie.com\/embed\/([\w_\-]+)/i'        => [ 'youtube',         ['id'=>1]               ],
             
         ];
         
         $sizes = [
-            'dailymail'     => [ 'width' => 698, 'height' => 573 ],
-            'dailymotion'   => [ 'width' => 480, 'height' => 270 ],
-            'imdb'          => [ 'width' => 854, 'height' => 650 ],
-            'instagram'     => [ 'width' => 320, 'height' => 320 ],
-            'facebook'      => [ 'width' => 854, 'height' => 400 ],
-            'googleplus'    => [ 'width' => 560, 'height' => 314 ],
-            'liveleak'      => [ 'width' => 640, 'height' => 360 ],
-            'twitter'       => [ 'width' => 560, 'height' => 314 ],
-            'videoplayer'   => [ 'width' => 560, 'height' => 314 ],
-            'vidio'         => [ 'width' => 480, 'height' => 270 ],
-            'vidme'         => [ 'width' => 854, 'height' => 480 ],
-            'vimeo'         => [ 'width' => 560, 'height' => 314 ],
-            'youtube'       => [ 'width' => 560, 'height' => 314 ],
+            'dailymail'         => [ 'width' => 698, 'height' => 573 ],
+            'dailymotion'       => [ 'width' => 480, 'height' => 270 ],
+            'imdb'              => [ 'width' => 854, 'height' => 650 ],
+            'instagram'         => [ 'width' => 320, 'height' => 320 ],
+            'facebook-video'    => [ 'width' => 854, 'height' => 400 ],
+            'facebook-post'     => [ 'width' => 854, 'height' => 400 ],
+            'googleplus'        => [ 'width' => 560, 'height' => 314 ],
+            'liveleak'          => [ 'width' => 640, 'height' => 360 ],
+            'twitter'           => [ 'width' => 560, 'height' => 314 ],
+            'videoplayer'       => [ 'width' => 560, 'height' => 314 ],
+            'vidio'             => [ 'width' => 480, 'height' => 270 ],
+            'vidme'             => [ 'width' => 854, 'height' => 480 ],
+            'vimeo'             => [ 'width' => 560, 'height' => 314 ],
+            'youtube'           => [ 'width' => 560, 'height' => 314 ],
         ];
         
         $props = ['width', 'height', 'user', 'id', 'url', 'vendor', 'size', 'mime'];

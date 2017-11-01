@@ -154,7 +154,7 @@ class Embed implements \JsonSerializable
         ];
         
         $urls = [
-            'dailymail'     => 'https://www.dailymail.co.uk/embed/video/${id}.html',
+            'dailymail'     => 'http://www.dailymail.co.uk/embed/video/${id}.html',
             'dailymotion'   => 'https://www.dailymotion.com/embed/video/${id}',
             'facebook'      => 'https://www.facebook.com/${user}/videos/${id}',
             'googleplus'    => 'https://plus.google.com/${user}/posts/${id}',

@@ -24,6 +24,11 @@ class Media implements \JsonSerializable
         $this->_file = preg_replace('/\.'.$this->_ext.'$/', '', $this->_value);
     }
     
+    private function _getAbs(){
+        $dis = \Phun::$dispatcher;
+        return $dis->router->to('mediaGenerator', ['path'=>str_replace('/media/','',$this->_value)]);
+    }
+    
     private function _getSize(){
         $abs = BASEPATH . $this->_value;
         if(is_file($abs))
@@ -39,6 +44,8 @@ class Media implements \JsonSerializable
     public function __get($name){
         if($name === 'value')
             return $this->_value;
+        if($name === 'abs')
+            return $this->_getAbs();
         
         if(!module_exists('media'))
             return $this->_value;

@@ -318,6 +318,23 @@ class Formatter {
                         }
                         $object->$field = $obj_values;
                         break;
+                    
+                    case 'multiple-text':
+                        $value = $object->$field;
+                        $separator = $args['separator'];
+                        if($separator === 'PHP_EOL'){
+                            $value = str_replace(["\r","\n","\r\n"], PHP_EOL, $value);
+                            $separator = PHP_EOL;
+                        }
+                        $values = explode($separator, $value);
+                        $obj_values = [];
+                        foreach($values as $val){
+                            $val = trim($val);
+                            if($val)
+                                $obj_values[] = new Text($val);
+                        }
+                        $object->$field = $obj_values;
+                        break;
                         
                     case 'join':
                         $jflds = $args['fields'];

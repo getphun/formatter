@@ -121,8 +121,13 @@ class Embed implements \JsonSerializable
                 .   'width="${width}">'
                 . '</iframe>',
             
-            'twitter' =>
+            'twitter-tweet' =>
                   '<blockquote class="twitter-tweet">'
+                .   '<a href="${url}"></a>'
+                . '</blockquote>',
+            
+            'twitter-video' =>
+                  '<blockquote class="twitter-video">'
                 .   '<a href="${url}"></a>'
                 . '</blockquote>',
             
@@ -184,7 +189,8 @@ class Embed implements \JsonSerializable
             'imdb'          => 'https://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
             'liveleak'      => 'https://www.liveleak.com/ll_embed?f=${id}',
-            'twitter'       => 'https://twitter.com/${user}/status/${id}',
+            'twitter-tweet' => 'https://twitter.com/${user}/status/${id}',
+            'twitter-video' => 'https://twitter.com/${user}/status/${id}',
             'videoplayer'   => '${url}',
             'vidio'         => 'https://www.vidio.com/embed/${id}?player_only=true&autoplay=false',
             'vidme'         => 'https://vid.me/e/${id}?tools=1',
@@ -195,6 +201,7 @@ class Embed implements \JsonSerializable
         $regexs = [
             '/youtube.com\/embed\/([\w_\-]+)/i'                 => [ 'youtube',         ['id'=>1]               ],
             '/youtube\.com(.+)v=([\w_\-]+)/'                    => [ 'youtube',         ['id'=>2]               ],
+            
             '/facebook\.com\/([^\/]+)\/videos\/([^\/]+)/'       => [ 'facebook-video',  ['user'=>1,'id'=>2]     ],
             '/facebook\.com\/.+facebook\.com%2F([^%]+)%2Fvideos%2F([0-9]+)/'
                                                                 => [ 'facebook-video',  ['user'=>1,'id'=>2]     ],
@@ -203,7 +210,11 @@ class Embed implements \JsonSerializable
                                                                 => [ 'facebook-post',   ['user'=>1,'id'=>2]     ],
                                                                 
             '/youtu\.be\/([\w_\-]+)/'                           => [ 'youtube',         ['id'=>1]               ],
-            '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter',         ['user'=>1, 'id'=>2]    ],
+            
+            '/twitter-video.+twitter.com\/([^\/]+)\/status\/([0-9]+)/'
+                                                                => [ 'twitter-video',   ['user'=>1, 'id'=>2]    ],
+            '/twitter.com\/([^\/]+)\/status\/([0-9]+)/'         => [ 'twitter-tweet',   ['user'=>1, 'id'=>2]    ],
+            
             '/plus\.google\.com\/([^\/]+)\/posts\/([\w]+)/'     => [ 'googleplus',      ['user'=>1, 'id'=>2]    ],
             '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer',     ['url'=>0, 'mime'=>1]   ],
         
@@ -238,7 +249,8 @@ class Embed implements \JsonSerializable
             'facebook-post'     => [ 'width' => 854, 'height' => 400 ],
             'googleplus'        => [ 'width' => 560, 'height' => 314 ],
             'liveleak'          => [ 'width' => 640, 'height' => 360 ],
-            'twitter'           => [ 'width' => 560, 'height' => 314 ],
+            'twitter-tweet'     => [ 'width' => 560, 'height' => 314 ],
+            'twitter-video'     => [ 'width' => 560, 'height' => 314 ],
             'videoplayer'       => [ 'width' => 560, 'height' => 314 ],
             'vidio'             => [ 'width' => 480, 'height' => 270 ],
             'vidme'             => [ 'width' => 854, 'height' => 480 ],

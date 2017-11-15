@@ -121,6 +121,16 @@ class Embed implements \JsonSerializable
                 .   'width="${width}">'
                 . '</iframe>',
             
+            'streamable' =>
+                  '<iframe '
+                .   'allowFullscreen="1" '
+                .   'frameborder="0" '
+                .   'height="${height}" '
+                .   'scrolling="no" '
+                .   'src="${url}" '
+                .   'width="${width}">'
+                . '</iframe>',
+            
             'twitter-tweet' =>
                   '<blockquote class="twitter-tweet">'
                 .   '<a href="${url}"></a>'
@@ -188,6 +198,7 @@ class Embed implements \JsonSerializable
             'googleplus'    => 'https://plus.google.com/${user}/posts/${id}',
             'imdb'          => 'https://www.imdb.com/videoembed/${id}',
             'instagram'     => 'https://www.instagram.com/p/${id}',
+            'streamable'    => 'https://streamable.com/s/${id}',
             'liveleak'      => 'https://www.liveleak.com/ll_embed?f=${id}',
             'twitter-tweet' => 'https://twitter.com/${user}/status/${id}',
             'twitter-video' => 'https://twitter.com/${user}/status/${id}',
@@ -218,6 +229,7 @@ class Embed implements \JsonSerializable
             '/plus\.google\.com\/([^\/]+)\/posts\/([\w]+)/'     => [ 'googleplus',      ['user'=>1, 'id'=>2]    ],
             '/^.+\.(mp4|mpeg|ogg|webm)$/i'                      => [ 'videoplayer',     ['url'=>0, 'mime'=>1]   ],
         
+            '/streamable\.com\/(s\/)?([^\/\?]+)/'               => [ 'streamable',      ['id'=>2]               ],
             '/vidio.com\/embed\/([\w\-]+)/'                     => [ 'vidio',           ['id'=>1]               ],
             '/vidio.com\/watch\/([\w\-]+)/'                     => [ 'vidio',           ['id'=>1]               ],
             '/instagram\.com\/p\/(\w+)/'                        => [ 'instagram',       ['id'=>1]               ],
@@ -249,6 +261,7 @@ class Embed implements \JsonSerializable
             'facebook-post'     => [ 'width' => 854, 'height' => 400 ],
             'googleplus'        => [ 'width' => 560, 'height' => 314 ],
             'liveleak'          => [ 'width' => 640, 'height' => 360 ],
+            'streamable'        => [ 'width' => 560, 'height' => 314 ],
             'twitter-tweet'     => [ 'width' => 560, 'height' => 314 ],
             'twitter-video'     => [ 'width' => 560, 'height' => 314 ],
             'videoplayer'       => [ 'width' => 560, 'height' => 314 ],

@@ -19,7 +19,8 @@ return [
     ],
     '__dependencies' => [
         'core',
-        '/media/db-mysql'
+        '/media/db-mysql',
+        '/lib-markdown'
     ],
     '_services' => [],
     '_autoload' => [
@@ -29,6 +30,7 @@ return [
             'Formatter\\Object\\Embed'      => 'modules/formatter/object/Embed.php',
             'Formatter\\Object\\Enum'       => 'modules/formatter/object/Enum.php',
             'Formatter\\Object\\Location'   => 'modules/formatter/object/Location.php',
+            'Formatter\\Object\\Markdown'   => 'modules/formatter/object/Markdown.php',
             'Formatter\\Object\\Media'      => 'modules/formatter/object/Media.php',
             'Formatter\\Object\\Number'     => 'modules/formatter/object/Number.php',
             'Formatter\\Object\\Text'       => 'modules/formatter/object/Text.php',

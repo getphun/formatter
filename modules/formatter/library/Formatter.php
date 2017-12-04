@@ -10,6 +10,7 @@ use Formatter\Object\DateTime;
 use Formatter\Object\Embed;
 use Formatter\Object\Enum;
 use Formatter\Object\Location;
+use Formatter\Object\Markdown;
 use Formatter\Object\Media;
 use Formatter\Object\Number;
 use Formatter\Object\Text;
@@ -38,6 +39,10 @@ class Formatter {
             
         case 'location':
             $value = new Location($value);
+            break;
+        
+        case 'markdown':
+            $value = new Markdown($value);
             break;
             
         case 'media':

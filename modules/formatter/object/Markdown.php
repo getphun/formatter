@@ -16,7 +16,7 @@ class Markdown implements \JsonSerializable
     public function __construct($value){
         $this->_html = $this->_value = $value ?? '';
         if(module_exists('lib-markdown'))
-            $this->_html = \Michelf\Markdown::defaultTransform($this->_html);
+            $this->_html = \Michelf\Markdown::defaultTransform(hs($this->_html));
         $this->_html = new \Formatter\Object\Text($this->_html);
     }
     

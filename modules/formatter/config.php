@@ -27,6 +27,7 @@ return [
         'classes' => [
             'Formatter'                     => 'modules/formatter/library/Formatter.php',
             'Formatter\\Object\\DateTime'   => 'modules/formatter/object/DateTime.php',
+            'Formatter\\Object\\UTC'        => 'modules/formatter/object/UTC.php',
             'Formatter\\Object\\Embed'      => 'modules/formatter/object/Embed.php',
             'Formatter\\Object\\Enum'       => 'modules/formatter/object/Enum.php',
             'Formatter\\Object\\Location'   => 'modules/formatter/object/Location.php',

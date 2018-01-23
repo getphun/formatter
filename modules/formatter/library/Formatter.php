@@ -14,6 +14,7 @@ use Formatter\Object\Markdown;
 use Formatter\Object\Media;
 use Formatter\Object\Number;
 use Formatter\Object\Text;
+use Formatter\Object\UTC;
 
 class Formatter {
     
@@ -71,7 +72,10 @@ class Formatter {
         case 'text':
             $value = new Text($value);
             break;
-            
+        
+        case 'utc':
+            $value = new UTC($value);
+            break;
         }
         
         return $value;

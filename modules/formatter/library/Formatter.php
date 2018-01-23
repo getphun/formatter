@@ -398,8 +398,12 @@ class Formatter {
             
             if(!$arraykey)
                 $result[] = $object;
-            else
-                $result[$object->$arraykey] = $object;
+            else{
+                $okey = $object->$arraykey;
+                if(is_object($okey))
+                    $okey = $okey->__toString();
+                $result[$okey] = $object;
+            }
         }
         
         return $result;

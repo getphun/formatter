@@ -37,6 +37,16 @@ class Formatter {
         case 'embed':
             $value = new Embed($value);
             break;
+
+        case 'json':
+            if($value){
+                try{
+                    $value = json_decode($value);
+                }catch(\Exception $e){
+                    $value = null;
+                }
+            }
+            break;
             
         case 'location':
             $value = new Location($value);
@@ -344,20 +354,19 @@ class Formatter {
                         }
                         $object->$field = $obj_values;
                         break;
-                        
-                    case 'join':
-                        $jflds = $args['fields'];
-                        $value = '';
-                        foreach($jflds as $fld){
-                            if(substr($fld,0,1) === '@'){
-                                $value.= $object->{(substr($fld,1))};
-                            }else{
-                                $value.= $fld;
+
+                    case 'json':
+                        $value = $object->$field;
+                        if($value){
+                            try{
+                                $value = json_decode($value);
+                            }catch(\Exception $e){
+                                $value = null;
                             }
+                            $object->$field = $value;
                         }
-                        $object->$field = $value;
                         break;
-                    
+
                     case 'multiple-object':
                         $obj_field = $object->$field;
                         $obj_field_ids = explode($args['separator'], $obj_field);

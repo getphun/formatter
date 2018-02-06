@@ -27,7 +27,8 @@ class Formatter {
             break;
             
         case 'date':
-            $value = new DateTime($value);
+            if($value)
+                $value = new DateTime($value);
             break;
             
         case 'delete';
@@ -84,7 +85,8 @@ class Formatter {
             break;
         
         case 'utc':
-            $value = new UTC($value);
+            if($value)
+                $value = new UTC($value);
             break;
         }
         

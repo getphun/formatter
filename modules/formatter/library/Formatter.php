@@ -411,16 +411,13 @@ class Formatter {
                 }
             }
 
-            // rename each properties if rename action exists
-            foreach($objects as $ind => $object){
-                foreach($rules as $field => $args){
-                    if(!is_array($args) || !isset($args['rename']))
-                        continue;
-                    $object->{$args['rename']} = $object->$field;
-                    unset($object->$field);
-                }
+            foreach($rules as $field => $args){
+                if(!is_array($args) || !isset($args['rename']))
+                    continue;
+                $object->{$args['rename']} = $object->$field;
+                unset($object->$field);
             }
-            
+
             if(!$arraykey)
                 $result[] = $object;
             else{

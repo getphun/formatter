@@ -18,6 +18,9 @@ format sederhana dari konfigurasi formatter:
 return [
     'name' => 'Phun',
     ...
+    'formatterOption' => [
+    	'objectify' => true
+    ],
     'formatter' => [
         'user' => [
             'avatar'    => 'media',
@@ -44,11 +47,17 @@ return [
                 'router'    => [
                     'for'      => 'siteUser'
                 ]
+            ],
+            'untouched' => [
+                'rename' => 'touched'
             ]
         ]
     ]
 ];
 ```
+
+Nilai konfigurasi `formatterOption->objectify` bertujuan mengubah nilai yang seharusnya
+object dan tidak di `fetch` menjadi object dengan hanya satu property, yaitu `id`.
 
 Formatter ini kemudian bisa digunakan darimana saja dengan memanggil `format` untuk
 memformat satu object, atau `formatMany` untuk memformat banyak object sekaligus.

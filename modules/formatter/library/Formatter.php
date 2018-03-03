@@ -111,6 +111,8 @@ class Formatter {
         $formatter_config = Phun::$config['formatter'] ?? [];
         if(!isset($formatter_config[$name]))
             throw new \Exception('Formatter named `' . $name . '` not registered.');
+        
+        $objectify = Phun::$config['formatterOption']['objectify'] ?? false;
             
         $rules = $formatter_config[$name];
         
@@ -386,6 +388,8 @@ class Formatter {
                         $obj_field = $object->$field;
                         if($fetch && isset($object_field_objects[$field][$obj_field])){
                             $object->$field = $object_field_objects[$field][$obj_field];
+                        }elseif($object->$field && $objectify){
+                            $object->$field = (object)['id' => (int)$object->$field];
                         }
                         break;
                     
@@ -404,6 +408,16 @@ class Formatter {
                         break;
                     
                     }
+                }
+            }
+
+            // rename each properties if rename action exists
+            foreach($objects as $ind => $object){
+                foreach($rules as $field => $args){
+                    if(!is_array($args) || !isset($args['rename']))
+                        continue;
+                    $object->{$args['rename']} = $object->$field;
+                    unset($object->$field);
                 }
             }
             

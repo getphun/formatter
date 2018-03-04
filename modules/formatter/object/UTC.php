@@ -17,7 +17,9 @@ class UTC implements \JsonSerializable
     public function __construct($date){
         $this->_value = (string)$date;
         $this->_time  = strtotime($this->_value . ' UTC');
-        $this->_date  = new \DateTime($this->_value);
+        $this->_date  = new \DateTime($this->_value, new \DateTimeZone('UTC'));
+        $user_timezone = date_default_timezone_get();
+        $this->_date->setTimezone(new \DateTimeZone($user_timezone));
     }
     
     public function __toString(){

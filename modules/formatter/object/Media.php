@@ -118,6 +118,21 @@ class Media implements \JsonSerializable
         return $tx;
     }
     
+    public function picture($width, $height, $attrs=[], $sizes=[]){
+        if(is_null($width))
+            $width = $this->size('width');
+        if(is_null($height))
+            $height = $this->size('height');
+        $padding_bottom = round($height/$width*100, 2);
+        $tx = '<div style="position:relative;height:0;padding-bottom:'.$padding_bottom.'%">';
+        $tx.=   '<picture style="position:absolute;left:0;top:0;width:100%;height:100%;">';
+        $tx.=       $this->img($width, $height, $attrs);
+        $tx.=   '</picture>';
+        $tx.= '</div>';
+        
+        return $tx;
+    }
+    
     public function size($dir){
         if(is_null($this->_width))
             $this->_getSize();

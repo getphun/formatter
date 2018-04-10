@@ -324,14 +324,23 @@ class Formatter {
                         break;
                         
                     case 'enum':
-                        $form = $args['form'];
-                        $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
+                        if(isset($args['form'])){
+                            $form = $args['form'];
+                            $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
+                        }elseif(isset($args['options'])){
+                            $options = $args['options'];
+                        }
                         $object->$field = new Enum($options, $object->$field);
                         break;
                     
                     case 'multiple-enum':
-                        $form = $args['form'];
-                        $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
+                        if(isset($args['form'])){
+                            $form = $args['form'];
+                            $options = Phun::$config['form'][$form['name']][$form['field']]['options'];
+                        }elseif(isset($args['options'])){
+                            $options = $args['options'];
+                        }
+                        
                         $obj_field = $object->$field;
                         $obj_field_ids = explode($args['separator'], $obj_field);
                         $obj_values = [];

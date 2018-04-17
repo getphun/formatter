@@ -126,7 +126,7 @@ class Formatter {
                 if(is_string($args))
                     continue;
                 
-                if(!in_array($args['type'], ['partial', 'object', 'multiple-object', 'chain']))
+                if(!in_array($args['type'], ['partial', 'object', 'multiple-object', 'chain', 'handler']))
                     continue;
                 
                 $process = false;
@@ -149,11 +149,11 @@ class Formatter {
                 $field_objects[$field] = $args;
                 $field_objects[$field]['ids'] = [];
             }
-            
+
             foreach($field_objects as $field => $args){
                 foreach($objects as $object){
-                    if(in_array($args['type'], ['object', 'multiple-object']) && $object->$field){
-                        if($args['type'] === 'object')
+                    if(in_array($args['type'], ['handler', 'object', 'multiple-object']) && $object->$field){
+                        if(in_array($args['type'], ['object','handler']))
                             $args['ids'][] = $object->$field;
                         elseif($args['type'] == 'multiple-object')
                             $args['ids'] = array_merge($args['ids'], explode($args['separator'], $object->$field));
@@ -229,6 +229,28 @@ class Formatter {
                     }
                     
                     $object_field_objects[$field] = $used_chains;
+
+                }elseif($args['type'] === 'handler'){
+                    if(!$args['ids'])
+                        continue;
+
+                    $class  = $args['class'];
+                    $method = $args['method'];
+
+                    if(!autoload_class_exists($class))
+                        continue;
+
+                    foreach($args['ids'] as $id){
+                        $handlerResult = $class::$method($id);
+                        if(!$handlerResult)
+                            continue;
+                        $objs[$id] = $handlerResult;
+                    }
+
+                    if(isset($args['format']))
+                        $objs = self::formatMany($args['format'], array_values($objs), 'id', $new_fetch[$field]);
+
+                    $object_field_objects[$field] = $objs;
                     
                 }elseif($args['type'] === 'object' || $args['type'] === 'multiple-object'){
                     if(!$args['ids'])
@@ -314,7 +336,8 @@ class Formatter {
                         $object->$field = self::apply($object->$field, $args);
                 }else{
                     switch($args['type']){
-                    
+
+
                     case 'chain':
                         if($fetch && isset($object_field_objects[$field][$obj_id])){
                             $object->$field = $object_field_objects[$field][$obj_id];
@@ -392,7 +415,16 @@ class Formatter {
                             $object->$field = $obj_values;
                         }
                         break;
-                        
+                    
+                    case 'handler':
+                        $obj_field = $object->$field;
+                        if($fetch && isset($object_field_objects[$field][$obj_field])){
+                            $object->$field = $object_field_objects[$field][$obj_field];
+                        }elseif($object->$field && $objectify){
+                            $object->$field = (object)['id' => (int)$object->$field];
+                        }
+                        break;
+
                     case 'object':
                         $obj_field = $object->$field;
                         if($fetch && isset($object_field_objects[$field][$obj_field])){

@@ -391,6 +391,12 @@ class Formatter {
                         $object->$field = $obj_values;
                         break;
 
+                    case 'inject':
+                        $class = $args['class'];
+                        $method = $args['method'];
+                        $object->$field = $class::$method($object);
+                        break;
+
                     case 'json':
                         $value = $object->$field;
                         if($value){

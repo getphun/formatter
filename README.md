@@ -19,7 +19,8 @@ return [
     'name' => 'Phun',
     ...
     'formatterOption' => [
-    	'objectify' => true
+    	'objectify' => true,
+    	'defaultMedia' => '/media/aa/bb/cc/lorem.jpg'
     ],
     'formatter' => [
         'user' => [

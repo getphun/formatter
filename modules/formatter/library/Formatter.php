@@ -19,6 +19,8 @@ use Formatter\Object\UTC;
 class Formatter {
     
     static private function apply($value, $type){
+        $defaultMedia = Phun::$config['formatterOption']['defaultMedia'] ?? null;
+
         switch($type){
         
         case 'boolean':
@@ -58,6 +60,8 @@ class Formatter {
             break;
             
         case 'media':
+            if(!$value)
+                $value = $defaultMedia;
             if($value)
                 $value = new Media($value);
             break;

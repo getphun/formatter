@@ -192,6 +192,16 @@ class Embed implements \JsonSerializable
                 .   'src="${url}" '
                 .   'width="${width}">'
                 . '</iframe>',
+
+            'youtube-live' => 
+                  '<iframe '
+                .   'allowFullscreen="1" '
+                .   'frameborder="0" '
+                .   'height="${height}" '
+                .   'scrolling="no" '
+                .   'src="${url}" '
+                .   'width="${width}">'
+                . '</iframe>',
             
             'videoplayer' => 
                   '<video '
@@ -219,11 +229,13 @@ class Embed implements \JsonSerializable
             'vidio'             => 'https://www.vidio.com/embed/${id}?player_only=true&autoplay=false',
             'vidme'             => 'https://vid.me/e/${id}?tools=1',
             'vimeo'             => 'https://player.vimeo.com/video/${id}?title=0&amp;byline=0&amp;portrait=0&color=e3a01b',
-            'youtube'           => 'https://www.youtube.com/embed/${id}?rel=0'
+            'youtube'           => 'https://www.youtube.com/embed/${id}?rel=0',
+            'youtube-live'      => 'https://www.youtube.com/embed/live_stream?channel=${id}'
         ];
         
         $regexs = [
-            '/youtube.com\/embed\/([\w_\-]+)/i'                                 => [ 'youtube',         ['id'=>1]               ],
+            '/youtube\.com\/embed\/live_stream\?channel\=(.+)/'                 => ['youtube-live',     ['id'=>1]               ],
+            '/youtube\.com\/embed\/([\w_\-]+)/i'                                => [ 'youtube',         ['id'=>1]               ],
             '/youtube\.com(.+)v=([\w_\-]+)/'                                    => [ 'youtube',         ['id'=>2]               ],
             '/youtu\.be\/([\w_\-]+)/'                                           => [ 'youtube',         ['id'=>1]               ],
             
@@ -290,6 +302,7 @@ class Embed implements \JsonSerializable
             'vidme'             => [ 'width' => 854, 'height' => 480 ],
             'vimeo'             => [ 'width' => 560, 'height' => 314 ],
             'youtube'           => [ 'width' => 560, 'height' => 314 ],
+            'youtube-live'      => [ 'width' => 560, 'height' => 314 ],
         ];
         
         $props = ['width', 'height', 'user', 'id', 'url', 'vendor', 'size', 'mime'];
